@@ -20,7 +20,8 @@ public class TaskService {
         return tasks;
     }
 
-    public void createTask(){
-        //Coming soon
+    public Task createTask(Task task) {
+        tasks.add(task);
+        return task;
     }
 }
