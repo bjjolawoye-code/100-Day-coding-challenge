@@ -26,8 +26,19 @@ public class TaskController {
         return String.format("Hello %s!", name);
     }
 
-    @PostMapping
+    @PostMapping("/newTask")
     public Task createTask(@RequestBody Task task) {
         return taskService.createTask(task);
+    }
+
+    @GetMapping("/{id}")
+    public Task getTaskById(@PathVariable Long id) {
+        Task task = taskService.getTaskById(id);
+
+        if (task == null) {
+            throw new RuntimeException("Task not found");
+        }
+
+        return task;
     }
 }
