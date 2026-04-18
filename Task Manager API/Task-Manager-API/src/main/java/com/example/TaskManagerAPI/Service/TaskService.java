@@ -35,5 +35,13 @@ public class TaskService {
         return task;
     }
 
+    public boolean deleteTask(Long id) {
+        Task task = getTaskById(id);
+        if (task != null) {
+            return tasks.remove(task);
+        }
+        return false;
+    }
+
 
 }

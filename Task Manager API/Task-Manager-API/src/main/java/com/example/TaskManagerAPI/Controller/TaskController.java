@@ -41,4 +41,15 @@ public class TaskController {
 
         return task;
     }
+
+    @DeleteMapping("/{id}")
+    public String deleteTask(@PathVariable Long id) {
+        boolean deleted = taskService.deleteTask(id);
+
+        if (!deleted) {
+            throw new RuntimeException("Task not found");
+        }
+
+        return "Task deleted successfully";
+    }
 }
