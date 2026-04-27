@@ -1,7 +1,10 @@
 package com.example.TaskManagerAPI.Model;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class Task {
     private Long id;
+    @NotBlank(message = "Title cannot be empty")
     private String title;
     private boolean completed;
 

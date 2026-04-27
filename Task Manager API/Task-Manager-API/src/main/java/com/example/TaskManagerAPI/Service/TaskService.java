@@ -18,6 +18,7 @@ public class TaskService {
     }
 
     public List<Task> getAllTasks() {
+
         return tasks;
     }
     public Task getTaskById(Long id) {
@@ -36,12 +37,19 @@ public class TaskService {
     }
 
     public boolean deleteTask(Long id) {
-        Task task = getTaskById(id);
-        if (task != null) {
-            return tasks.remove(task);
-        }
-        return false;
+        return tasks.removeIf(task -> task.getId().equals(id));
+
     }
 
+    public Task updateTask(Long id, Task updatedTask) {
+        for (Task task : tasks) {
+            if (task.getId().equals(id)) {
+                task.setTitle(updatedTask.getTitle());
+                task.setCompleted(updatedTask.isCompleted());
+                return task;
+            }
+        }
+        return null;
+    }
 
 }

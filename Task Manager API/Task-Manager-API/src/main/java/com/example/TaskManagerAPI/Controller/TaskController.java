@@ -2,6 +2,7 @@ package com.example.TaskManagerAPI.Controller;
 
 import com.example.TaskManagerAPI.Model.Task;
 import com.example.TaskManagerAPI.Service.TaskService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class TaskController {
     }
 
     @PostMapping("/newTask")
-    public Task createTask(@RequestBody Task task) {
+    public Task createTask(@RequestBody @Valid Task task) {
         return taskService.createTask(task);
     }
 
@@ -51,5 +52,16 @@ public class TaskController {
         }
 
         return "Task deleted successfully";
+    }
+
+    @PutMapping("/{id}")
+    public Task updateTask(@PathVariable Long id, @RequestBody Task task) {
+        Task updated = taskService.updateTask(id, task);
+
+        if (updated == null) {
+            throw new RuntimeException("Task not found");
+        }
+
+        return updated;
     }
 }
