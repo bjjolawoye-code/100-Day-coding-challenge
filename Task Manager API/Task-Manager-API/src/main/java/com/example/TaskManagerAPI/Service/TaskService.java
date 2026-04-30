@@ -1,6 +1,7 @@
 package com.example.TaskManagerAPI.Service;
 
 import com.example.TaskManagerAPI.Model.Task;
+import com.example.TaskManagerAPI.Repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -8,48 +9,48 @@ import java.util.List;
 
 @Service
 public class TaskService {
+    private TaskRepository taskRepository;
 
-    private List<Task> tasks = new ArrayList<>();
-    private Long nextId = 1L;
-
-    public TaskService() {
-        tasks.add(new Task(1l, "Learn Spring Boot", false));
-        tasks.add(new Task(2l, "Build API", false));
+    public TaskService(TaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
+        taskRepository.save(new Task(1l, "Learn Spring Boot", false));
+        taskRepository.save(new Task(2l, "Build API", false));
     }
+
+
 
     public List<Task> getAllTasks() {
 
-        return tasks;
+        return taskRepository.findAll();
     }
     public Task getTaskById(Long id) {
-        for (Task task : tasks) {
-            if (task.getId().equals(id)) {
-                return task;
-            }
-        }
-        return null;
+        return taskRepository.findById(id).orElse(null);
     }
 
     public Task createTask(Task task) {
-        task.setId(nextId++);
-        tasks.add(task);
+        taskRepository.save(task);
         return task;
     }
 
     public boolean deleteTask(Long id) {
-        return tasks.removeIf(task -> task.getId().equals(id));
+        if (!taskRepository.existsById(id)) {
+            return false;
+        }
+
+        taskRepository.deleteById(id);
+        return true;
 
     }
 
     public Task updateTask(Long id, Task updatedTask) {
-        for (Task task : tasks) {
-            if (task.getId().equals(id)) {
-                task.setTitle(updatedTask.getTitle());
-                task.setCompleted(updatedTask.isCompleted());
-                return task;
-            }
-        }
-        return null;
+
+        return taskRepository.findById(id)
+                .map(task -> {
+                    task.setTitle(updatedTask.getTitle());
+                    task.setCompleted(updatedTask.isCompleted());
+                    return taskRepository.save(task);
+                })
+                .orElse(null);
     }
 
 }
