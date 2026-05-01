@@ -53,4 +53,11 @@ public class TaskService {
                 .orElse(null);
     }
 
+    public List<Task> getCompletedTasks(boolean completed) {
+        return taskRepository.findByCompleted(completed);
+    }
+
+
+
+
 }

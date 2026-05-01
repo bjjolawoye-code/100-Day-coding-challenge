@@ -64,4 +64,9 @@ public class TaskController {
 
         return updated;
     }
+
+    @GetMapping("/status")
+    public List<Task> getTasksByStatus(@RequestParam boolean completed) {
+        return taskService.getCompletedTasks(completed);
+    }
 }
