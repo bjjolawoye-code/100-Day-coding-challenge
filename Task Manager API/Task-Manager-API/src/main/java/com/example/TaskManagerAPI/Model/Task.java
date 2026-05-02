@@ -1,9 +1,8 @@
 package com.example.TaskManagerAPI.Model;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+
+import java.time.LocalDateTime;
 
 @Entity
 public class Task {
@@ -13,6 +12,7 @@ public class Task {
     @NotBlank(message = "Title cannot be empty")
     private String title;
     private boolean completed;
+    private LocalDateTime createdAt;
 
     // constructors, getters, setters
 
@@ -28,6 +28,15 @@ public class Task {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        createdAt = LocalDateTime.now();
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
     public String getTitle() {
