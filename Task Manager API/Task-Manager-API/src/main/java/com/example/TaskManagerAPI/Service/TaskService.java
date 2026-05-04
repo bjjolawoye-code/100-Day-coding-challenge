@@ -2,6 +2,7 @@ package com.example.TaskManagerAPI.Service;
 
 import com.example.TaskManagerAPI.Model.Task;
 import com.example.TaskManagerAPI.Repository.TaskRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,7 +22,9 @@ public class TaskService {
 
     public List<Task> getAllTasks() {
 
-        return taskRepository.findAll();
+        return taskRepository.findAll(
+                Sort.by(Sort.Direction.DESC, "createdAt")
+        );
     }
     public Task getTaskById(Long id) {
         return taskRepository.findById(id).orElse(null);
